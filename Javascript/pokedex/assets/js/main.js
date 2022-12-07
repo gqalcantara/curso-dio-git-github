@@ -3,14 +3,13 @@ function convertPokemonToLi(pokemon) {
 
     return `
 <li class="pokemon">
-        <span class="number">#001</span>
+        <span class="number">#${pokemon.number}</span>
         <span class="name">${pokemon.name}</span>
     <div class="detail">
         <ol class="types">
-            <li class="type">grass</li>
-            <li class="type">poison</li>
+            ${pokemon.types.map((type) => `<li class="type">${type}</li>`).join('')}
         </ol>
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+        <img src="${pokemon.photo}"
         alt=${pokemon.name}>
     </div>
 </li>`
@@ -18,9 +17,6 @@ function convertPokemonToLi(pokemon) {
 
 const pokemonList = document.getElementById('pokemonList')
 
-pokeApi.getPokemons().then((pokemons) => {
-    for (let i = 0; i < pokemons.length; i++) {
-        const pokemon = pokemons[i]
-        pokemonList.innerHTML += convertPokemonToLi(pokemon)
-    }
+pokeApi.getPokemons().then((pokemons = []) => {
+    pokemonList.innerHTML += pokemons.map(convertPokemonToLi).join('')
 })
